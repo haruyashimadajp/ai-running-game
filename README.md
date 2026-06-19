@@ -1,55 +1,55 @@
-# AIを使ったゲーム制作
+# AI-Powered Cooperative Running Game
 
-プレイヤーとAI仲間がそれぞれ別のキャラクターを操作し、プレイヤーがAI仲間にチャットで指示を出しながら3D空間を一緒に走り回る協力アクションのプロトタイプ。
+A cooperative 3D action prototype where the player and an AI companion each control separate characters. The player gives instructions to the AI companion via a chat interface, and they work together to run through the level.
 
-AI仲間との会話処理は、まずキーワード一致によるルールベース実装から始め、将来的にローカルLLMへ差し替えられるようインターフェースで抽象化している。詳細な設計は[Docs/](./Docs)を参照。
+The natural language processing pipeline starts with a rule-based keyword matching implementation, designed to be swapped out for a local LLM later. All conversion logic sits behind an interface for easy replacement. See [Docs/](./Docs) for the full design.
 
-## 動作環境
+## Requirements
 
 - Unity 2022.3.21f1
 
-## セットアップ
+## Setup
 
-1. Unity Hubで本フォルダを既存プロジェクトとして開く（初回はパッケージ・Library生成に時間がかかる）
-2. `Assets/Added player and AI charactor.unity` シーンを開く
-3. シーンが空の場合は、メニュー `Tools > AI Runner > Build Demo Scene` を実行するとプレイヤー・AI仲間・カメラ・チャットUIが自動生成される
+1. Open this folder as an existing project in Unity Hub (first launch will take a while to generate packages and the Library folder)
+2. Open the `Assets/Added player and AI charactor.unity` scene
+3. If the scene is empty, run `Tools > AI Runner > Build Demo Scene` from the menu bar — this auto-generates the player, AI companion, camera, and chat UI
 
-## 操作方法
+## Controls
 
-- 移動: `W` `A` `S` `D`
-- 走る: `Shift`（押しながら移動）
-- ジャンプ: `Space`
-- AI仲間への指示: 画面左下のチャット欄にテキストを入力して送信
+- Move: `W` `A` `S` `D`
+- Run: hold `Shift` while moving
+- Jump: `Space`
+- Give instructions to the AI companion: type in the chat box at the bottom-left of the screen and press Enter or click Send
 
-### AI仲間に通じる指示の例
+### AI Companion Commands
 
-| 入力例 | AI仲間の行動 |
+| Input | Companion action |
 |---|---|
-| ついてきて / 来て / 追いかけて | プレイヤーを追従する |
-| 止まって / ストップ / 止まれ | 停止する |
-| 待って / 待機 | その場で待機する |
-| ジャンプして / 跳んで / 飛んで | ジャンプする |
-| 右 / 左 / 前 / 後ろ | その方向へ移動する |
+| Follow me / Come here / Chase me | Follow the player |
+| Stop / Halt | Stop moving |
+| Wait / Stand by | Wait in place |
+| Jump | Jump |
+| Go right / Go left / Go forward / Go back | Move in that direction |
 
-該当しない入力には「ごめん、わからないよ」と返答する。
+Unrecognised input gets the response: *"Sorry, I don't understand."*
 
-## ディレクトリ構成
+## Directory Structure
 
 ```
 Assets/
 ├── Scripts/
-│   ├── Player/        # プレイヤー操作
-│   ├── Companion/      # AI仲間の行動・自然言語処理の起点
-│   ├── Commands/        # 自然言語変換の入出力インターフェース・データ構造
-│   ├── UI/               # チャットUI
-│   └── Camera/           # 追従カメラ
+│   ├── Player/         # Player movement and input
+│   ├── Companion/      # AI companion behaviour and NLP entry point
+│   ├── Commands/       # NLP input/output interfaces and data structures
+│   ├── UI/             # Chat UI
+│   └── Camera/         # Third-person follow camera
 ├── Editor/
-│   └── DemoSceneBuilder.cs  # 検証用シーンの自動構築
-Docs/                        # 設計ドキュメント
+│   └── DemoSceneBuilder.cs  # Auto-builds the test scene
+Docs/                        # Design documents
 ```
 
-## ドキュメント
+## Documentation
 
-- [Docs/architecture.md](./Docs/architecture.md) — コンポーネント構成図・データフロー
-- [Docs/nlp-interface.md](./Docs/nlp-interface.md) — 自然言語変換処理の入出力インターフェース仕様（ローカルLLM対応を含む）
-- [Docs/conventions.md](./Docs/conventions.md) — 開発ルール・命名規則
+- [Docs/architecture.md](./Docs/architecture.md) — Component diagram and data flow
+- [Docs/nlp-interface.md](./Docs/nlp-interface.md) — NLP input/output interface spec (including local LLM pipeline design)
+- [Docs/conventions.md](./Docs/conventions.md) — Development rules and naming conventions
